@@ -7,6 +7,10 @@
  * Author URI: https://www.livecanvas.com
  */
 
+// Require info page
+require_once plugin_dir_path(__FILE__) . 'plugin-info.php';
+
+
 // Admin Bar Menu
 add_action('admin_bar_menu', function ($wp_admin_bar) {
     if (!current_user_can('manage_options')) return;
