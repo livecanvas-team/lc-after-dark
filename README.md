@@ -1,7 +1,7 @@
-# LC After Dark Screensaver
+# LC After Dark Screensaver for WordPress
 
 Bring back the 90s with this retro-inspired WordPress screensaver plugin — for admins only. Launch classic-style animations like Flying Toasters, Hard Rain, and more. Inspired by the legendary After Dark screensavers.
-
+Utilizing the After Dark CSS project by Bryan Braun 
 ---
 
 ## 🧩 Features
