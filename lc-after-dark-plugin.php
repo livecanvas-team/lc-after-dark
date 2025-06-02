@@ -36,7 +36,7 @@ add_action('admin_bar_menu', function ($wp_admin_bar) {
 
 // JS injection on frontend & backend
 $inject_screensaver = function () {
-    if (!current_user_can('manage_options')) return;
+    if (!current_user_can('manage_options')) return; //only for admins
 
     $triggered_type = sanitize_text_field($_GET['trigger_after_dark'] ?? '');
     $default_type = 'flying-toasters';
