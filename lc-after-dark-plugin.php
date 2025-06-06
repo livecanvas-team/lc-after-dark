@@ -10,7 +10,6 @@
 // Require info page
 require_once plugin_dir_path(__FILE__) . 'plugin-info.php';
 
-
 // Admin Bar Menu
 add_action('admin_bar_menu', function ($wp_admin_bar) {
     if (!current_user_can('manage_options')) return;
@@ -36,7 +35,7 @@ add_action('admin_bar_menu', function ($wp_admin_bar) {
 
 // JS injection on frontend & backend
 $inject_screensaver = function () {
-    if (!current_user_can('manage_options')) return; //only for admins
+    if (!current_user_can('manage_options')) return; // only for admins
 
     $triggered_type = sanitize_text_field($_GET['trigger_after_dark'] ?? '');
     $default_type = 'flying-toasters';
@@ -45,11 +44,15 @@ $inject_screensaver = function () {
 
     $url_base = plugin_dir_url(__FILE__) . 'after-dark-css-gh-pages/all/';
     $screenSaverURL = esc_url($url_base . $type . '.html');
+
+    // Read idle_minutes option
+    $idle_minutes = intval(get_option('lc_idle_minutes', 0));
+    $idle_delay_ms = ($idle_minutes > 0) ? $idle_minutes * 60 * 1000 : 999999999; // effectively disables if 0
     ?>
     <script>
         (() => {
             let iframe;
-            const delay = 2 * 60 * 1000; // 2 minutes
+            const delay = <?php echo $idle_delay_ms; ?>;
             let timeoutId;
 
             function showScreensaver() {
@@ -78,7 +81,6 @@ $inject_screensaver = function () {
                             resetTimer();
                         };
                         document.addEventListener("click", fallback, { once: true });
-                        document.addEventListener("keydown", fallback, { once: true });
                     }
                 };
             }
@@ -88,22 +90,15 @@ $inject_screensaver = function () {
                 timeoutId = setTimeout(showScreensaver, delay);
             }
 
-            ['mousemove', 'scroll', 'click', 'keydown'].forEach(evt =>
-                document.addEventListener(evt, resetTimer)
-            );
+            document.addEventListener("mousemove", resetTimer);
+            document.addEventListener("keydown", resetTimer);
+            document.addEventListener("click", resetTimer);
 
-            window.addEventListener("load", resetTimer);
-
-            <?php if (in_array($triggered_type, $valid_types)) : ?>
-            document.addEventListener("DOMContentLoaded", () => {
-                showScreensaver();
-            });
-            <?php endif; ?>
+            resetTimer();
         })();
     </script>
     <?php
 };
 
-// Load JS on frontend and admin
-add_action('wp_footer', $inject_screensaver, 99);
-add_action('admin_footer', $inject_screensaver, 99);
+add_action('wp_footer', $inject_screensaver);
+add_action('admin_footer', $inject_screensaver);
