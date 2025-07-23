@@ -49,7 +49,7 @@ $inject_screensaver = function () {
     $idle_minutes = intval(get_option('lc_idle_minutes', 0));
     $idle_delay_ms = ($idle_minutes > 0) ? $idle_minutes * 60 * 1000 : 999999999; // effectively disables if 0
     ?>
-    <script>
+    <script id="lc-screen-saver">
         (() => {
             let iframe;
             const delay = <?php echo $idle_delay_ms; ?>;
