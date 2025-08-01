@@ -8,7 +8,7 @@ Utilizing the After Dark CSS project by Bryan Braun
 
 - 💾 Admin bar menu to manually launch a screensaver
 - ⏱️ Automatically launches after 2 minutes of inactivity (frontend or backend)
-- 🖱️ Exits with a click or key press
+- 🖱️ Exits with a click  
 - 🧠 Works only for logged-in admins (`manage_options` capability)
 - 🔒 Screensaver iframe is injected safely and removed cleanly
 
